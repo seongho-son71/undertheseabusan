@@ -28,7 +28,7 @@ const Bubble: React.FC<{ position: [number, number, number]; scale?: number }> =
         thickness={0.5}
         roughness={0}
         transparent
-        opacity={0.3}
+        opacity={0.6}
         metalness={0.1}
       />
     </Sphere>
@@ -48,37 +48,38 @@ const WaterWave = () => {
 
   return (
     <Torus ref={ref} args={[6, 0.05, 16, 100]} rotation={[Math.PI / 2, 0, 0]}>
-      <meshStandardMaterial color="#72E1D1" emissive="#72E1D1" emissiveIntensity={0.8} transparent opacity={0.4} wireframe />
+      <meshStandardMaterial color="#ffffff" emissive="#ffffff" emissiveIntensity={0.5} transparent opacity={0.3} wireframe />
     </Torus>
   );
 }
 
 export const OceanHeroScene: React.FC = () => {
   return (
-    <div className="absolute inset-0 z-0 opacity-80 pointer-events-none">
+    <div className="absolute inset-0 z-0 opacity-90 pointer-events-none">
       <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
-        <ambientLight intensity={0.4} />
-        <pointLight position={[10, 10, 10]} intensity={1.5} color="#72E1D1" />
+        <ambientLight intensity={1.2} />
+        <pointLight position={[10, 10, 10]} intensity={3.0} color="#ffffff" />
+        <pointLight position={[-10, -5, 5]} intensity={1.5} color="#B9E9FF" />
         
         <Float speed={1.2} rotationIntensity={0.5} floatIntensity={0.5}>
           <group>
-            {[...Array(15)].map((_, i) => (
+            {[...Array(20)].map((_, i) => (
               <Bubble 
                 key={i} 
                 position={[
-                  (Math.random() - 0.5) * 10, 
-                  (Math.random() - 0.5) * 10, 
+                  (Math.random() - 0.5) * 12, 
+                  (Math.random() - 0.5) * 12, 
                   (Math.random() - 0.5) * 5
                 ]} 
-                scale={Math.random() * 0.1 + 0.05}
+                scale={Math.random() * 0.12 + 0.06}
               />
             ))}
           </group>
           <WaterWave />
         </Float>
         
-        <Environment preset="night" />
-        <Stars radius={50} depth={50} count={500} factor={4} saturation={0} fade speed={0.5} />
+        <Environment preset="city" />
+        <Stars radius={50} depth={50} count={200} factor={2} saturation={0} fade speed={0.5} />
       </Canvas>
     </div>
   );
@@ -89,12 +90,12 @@ export const DiverScene: React.FC = () => {
     <div className="w-full h-full absolute inset-0">
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
         <ambientLight intensity={0.5} />
-        <spotLight position={[5, 10, 5]} angle={0.3} penumbra={1} intensity={2} color="#72E1D1" />
+        <spotLight position={[5, 10, 5]} angle={0.3} penumbra={1} intensity={2} color="#ffffff" />
         
         <Float rotationIntensity={0.6} floatIntensity={0.4} speed={1.5}>
             <Sphere args={[1.5, 64, 64]}>
                 <MeshDistortMaterial
-                    color="#00416A"
+                    color="#E0F7FF"
                     speed={2}
                     distort={0.4}
                     radius={1}
@@ -102,7 +103,7 @@ export const DiverScene: React.FC = () => {
             </Sphere>
             {/* Simple silhouette-like representation of deep water */}
             <Torus args={[2.5, 0.02, 16, 100]} rotation={[Math.PI/2.1, 0, 0]}>
-                <meshStandardMaterial color="#72E1D1" transparent opacity={0.3} />
+                <meshStandardMaterial color="#ffffff" transparent opacity={0.3} />
             </Torus>
         </Float>
       </Canvas>

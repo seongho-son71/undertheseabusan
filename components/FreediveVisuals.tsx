@@ -20,8 +20,9 @@ export const BreathCycleDiagram: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center p-8 bg-white rounded-2xl shadow-sm border border-slate-100 my-8 w-full">
+    <div className="flex flex-col items-center justify-between p-8 bg-white rounded-2xl shadow-sm border border-slate-100 w-full h-full">
       <h3 className="font-serif text-2xl mb-4 text-slate-800 text-center">프리다이빙 호흡 주기</h3>
+      
       <div className="flex flex-wrap justify-center gap-4 mb-8">
         {stages.map((s, i) => (
           <div 
@@ -33,7 +34,7 @@ export const BreathCycleDiagram: React.FC = () => {
         ))}
       </div>
       
-      <div className="relative w-48 h-48 flex items-center justify-center">
+      <div className="relative w-48 h-48 flex items-center justify-center my-4">
         <motion.div 
           animate={{ 
             scale: stage === 1 ? 1.3 : stage === 2 ? 1.1 : stage === 3 ? 1.2 : 1,
@@ -71,9 +72,10 @@ export const CurriculumChart: React.FC = () => {
     ];
 
     return (
-        <div className="p-8 bg-ocean-deep text-white rounded-2xl shadow-xl w-full">
+        <div className="p-8 bg-ocean-deep text-white rounded-2xl shadow-xl w-full h-full flex flex-col justify-between">
             <h3 className="font-serif text-2xl mb-6 text-ocean-aqua">교육 커리큘럼</h3>
-            <div className="flex gap-2 mb-8 overflow-x-auto pb-2">
+            
+            <div className="flex gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">
                 {levels.map(level => (
                     <button
                         key={level.id}
@@ -85,7 +87,7 @@ export const CurriculumChart: React.FC = () => {
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center flex-grow">
                 <div className="space-y-4">
                     <div className="flex items-center gap-3">
                         <Waves className="text-ocean-aqua" />
@@ -111,6 +113,10 @@ export const CurriculumChart: React.FC = () => {
                         <span className="text-xs uppercase tracking-widest text-slate-500 mt-2">Target Depth</span>
                     </div>
                 </div>
+            </div>
+            
+            <div className="mt-8 pt-6 border-t border-white/10 hidden md:block">
+                <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] font-bold">Under the sea busan professional training system</p>
             </div>
         </div>
     );

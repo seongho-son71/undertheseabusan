@@ -3,7 +3,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { OceanHeroScene, DiverScene } from './components/SeaScenes';
 import { BreathCycleDiagram, CurriculumChart } from './components/FreediveVisuals';
 import { AdminDashboard } from './components/AdminDashboard';
-import { ArrowDown, Menu, X, Anchor, Users, Calendar, Instagram, MessageCircle, MapPin, Phone, Mail, Settings, Lock, Eye } from 'lucide-react';
+import { ArrowDown, Menu, X, Anchor, Users, Calendar, Instagram, MessageCircle, MapPin, Phone, Mail, Settings, Lock, Eye, ExternalLink, Waves } from 'lucide-react';
 
 const InstructorCard = ({ name, role, tags, delay, isAdmin }: { name: string, role: string, tags: string[], delay: string, isAdmin: boolean }) => {
   return (
@@ -38,10 +38,12 @@ const App: React.FC = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
 
-  // 사용자 인스타그램 계정 및 카카오톡 오픈채팅 계정
+  // 외부 링크 설정
   const instagramUrl = "https://www.instagram.com/seongho_son_barkhouse/";
   const kakaoOpenChatUrl = "https://open.kakao.com/o/sCx5XR9h";
+  const officialSiteUrl = "https://www.undertheseadiving.com";
 
   useEffect(() => {
     setIsMounted(true);
@@ -66,14 +68,20 @@ const App: React.FC = () => {
     if (isAdmin) {
       setIsAdmin(false);
     } else {
+      setPasswordInput('');
       setShowLogin(true);
     }
   };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsAdmin(true);
-    setShowLogin(false);
+    if (passwordInput === '7172') {
+      setIsAdmin(true);
+      setShowLogin(false);
+      setPasswordInput('');
+    } else {
+      alert('비밀번호가 올바르지 않습니다.');
+    }
   };
 
   if (!isMounted) return <div className="min-h-screen bg-ocean-deep" />;
@@ -98,25 +106,38 @@ const App: React.FC = () => {
             </span>
           </div>
           
-          <div className="hidden md:flex items-center gap-10 text-sm font-bold tracking-tight">
-            <a href="#intro" onClick={scrollToSection('intro')} className={`hover:text-ocean-aqua transition-colors uppercase ${scrolled ? 'text-slate-600' : 'text-white'}`}>브랜드 소개</a>
+          <div className="hidden md:flex items-center gap-6 lg:gap-10 text-sm font-bold tracking-tight">
+            <a href="#intro" onClick={scrollToSection('intro')} className={`hover:text-ocean-aqua transition-colors uppercase ${scrolled ? 'text-slate-600' : 'text-white'}`}>소개</a>
             <a href="#curriculum" onClick={scrollToSection('curriculum')} className={`hover:text-ocean-aqua transition-colors uppercase ${scrolled ? 'text-slate-600' : 'text-white'}`}>교육과정</a>
-            <a href="#instructors" onClick={scrollToSection('instructors')} className={`hover:text-ocean-aqua transition-colors uppercase ${scrolled ? 'text-slate-600' : 'text-white'}`}>강사진</a>
-            <a 
-              href={instagramUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`hover:text-ocean-aqua transition-colors flex items-center gap-1 ${scrolled ? 'text-slate-600' : 'text-white'}`}
-            >
-              <Instagram size={18} />
-            </a>
+            <a href="#instructors" onClick={scrollToSection('instructors')} className={`hover:text-ocean-aqua transition-colors uppercase ${scrolled ? 'text-slate-600' : 'text-white'}`}>강사</a>
+            
+            <div className="flex items-center gap-4 border-l border-white/20 pl-6 h-6 ml-2">
+              <a 
+                href={instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`hover:text-ocean-aqua transition-colors ${scrolled ? 'text-slate-600' : 'text-white'}`}
+                title="인스타그램"
+              >
+                <Instagram size={20} />
+              </a>
+              <a 
+                href={officialSiteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`px-3 py-1.5 rounded-lg border text-[10px] tracking-wider transition-all flex items-center gap-1.5 ${scrolled ? 'border-ocean-deep text-ocean-deep hover:bg-ocean-deep hover:text-white' : 'border-white/40 text-white hover:bg-white hover:text-ocean-deep'}`}
+              >
+                <ExternalLink size={12} /> 언더더씨다이빙
+              </a>
+            </div>
+
             <a 
               href={kakaoOpenChatUrl} 
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-2.5 bg-ocean-aqua text-ocean-deep rounded-full hover:scale-105 transition-all shadow-lg font-bold flex items-center gap-2"
             >
-              <Calendar size={16} /> 예약하기
+              <Calendar size={16} /> 문의하기
             </a>
           </div>
 
@@ -140,6 +161,8 @@ const App: React.FC = () => {
                 <input 
                   type="password" 
                   autoFocus
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
                   placeholder="관리자 암호를 입력하세요"
                   className="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-ocean-aqua transition-all"
                 />
@@ -153,33 +176,27 @@ const App: React.FC = () => {
       )}
 
       {/* Hero Section */}
-      <header className="relative h-screen flex items-center justify-center overflow-hidden bg-ocean-deep canvas-container">
-        <Suspense fallback={<div className="absolute inset-0 bg-ocean-deep" />}>
+      <header className="relative h-screen flex items-center justify-center overflow-hidden canvas-container">
+        <Suspense fallback={<div className="absolute inset-0 bg-[#3A9FD1]" />}>
           <OceanHeroScene />
         </Suspense>
         
         <div className="relative z-20 container mx-auto px-6 text-center text-white">
-          <div className="inline-block mb-6 px-5 py-2 border border-ocean-aqua/40 text-ocean-aqua text-xs tracking-[0.4em] font-bold rounded-full backdrop-blur-sm bg-white/5 uppercase">
+          <div className="inline-block mb-6 px-5 py-2 border border-white/40 text-white text-xs tracking-[0.4em] font-bold rounded-full backdrop-blur-md bg-white/10 uppercase">
             Safe & Professional Freediving
           </div>
-          <h1 className="font-serif text-5xl md:text-8xl font-black leading-tight mb-8 drop-shadow-2xl">
+          <h1 className="font-serif text-5xl md:text-8xl font-black leading-tight mb-8 drop-shadow-[0_10px_10px_rgba(0,0,0,0.3)]">
             고요한 바다,<br/><span className="italic font-normal text-ocean-aqua">그 깊은 자유</span>
           </h1>
-          <p className="max-w-3xl mx-auto text-lg md:text-xl text-slate-300 font-light leading-relaxed mb-12">
-            부산 해운대·송정의 푸른 바다에서 시작하는 특별한 호흡. <br/>
+          <p className="max-w-3xl mx-auto text-lg md:text-xl text-white font-medium leading-relaxed mb-12 drop-shadow-lg opacity-90">
+            푸른 바다에서 시작하는 특별한 호흡. <br/>
             언더더씨 부산은 당신의 한계를 넘는 가장 안전한 방법을 제시합니다.
           </p>
           
-          <div className="flex flex-col md:flex-row justify-center items-center gap-6">
+          <div className="flex justify-center items-center">
              <button onClick={scrollToSection('curriculum')} className="px-12 py-5 bg-ocean-aqua text-ocean-deep font-extrabold rounded-full shadow-2xl hover:scale-105 transition-all">
                 교육과정 보기
              </button>
-             <a href="#intro" onClick={scrollToSection('intro')} className="group flex items-center gap-4 text-sm font-bold text-white/80 hover:text-white transition-colors">
-                <span>SCROLL TO DISCOVER</span>
-                <span className="p-3 border-2 border-white/20 rounded-full group-hover:border-ocean-aqua transition-all animate-bounce">
-                    <ArrowDown size={16} />
-                </span>
-             </a>
           </div>
         </div>
       </header>
@@ -208,7 +225,7 @@ const App: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6">
                     <div className="p-6 bg-ocean-sand rounded-3xl text-center">
                         <div className="font-serif text-3xl font-black text-ocean-deep mb-1">99%</div>
-                        <p className="text-xs text-slate-500 font-bold uppercase tracking-tighter">초보자 이수율</p>
+                        <p className="text-xs text-slate-500 font-bold uppercase tracking-tighter">물공포증 극복</p>
                     </div>
                     <div className="p-6 bg-ocean-sand rounded-3xl text-center">
                         <div className="font-serif text-3xl font-black text-ocean-deep mb-1">1:3</div>
@@ -227,9 +244,9 @@ const App: React.FC = () => {
         <section id="curriculum" className="py-32 bg-ocean-sand/50">
             <div className="container mx-auto px-6">
                 <div className="text-center mb-20">
-                    <h2 className="font-serif text-5xl md:text-6xl mb-8 text-slate-900 tracking-tight">성장 커리큘럼</h2>
+                    <h2 className="font-serif text-5xl md:text-6xl mb-8 text-slate-900 tracking-tight">교육과정</h2>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
                     <BreathCycleDiagram />
                     <CurriculumChart />
                 </div>
@@ -239,7 +256,7 @@ const App: React.FC = () => {
         <section id="instructors" className="py-32 bg-white">
            <div className="container mx-auto px-6">
                 <div className="flex justify-center items-center gap-6 mb-20">
-                    <h2 className="font-serif text-5xl md:text-6xl text-slate-900">강사진</h2>
+                    <h2 className="font-serif text-5xl md:text-6xl text-slate-900">강사</h2>
                     <button 
                       onClick={toggleAdmin}
                       className={`p-3 rounded-full transition-all ${isAdmin ? 'bg-ocean-aqua text-ocean-deep rotate-90 shadow-lg' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
@@ -252,7 +269,7 @@ const App: React.FC = () => {
                     <InstructorCard 
                         name="손성호" 
                         role="Master Instructor" 
-                        tags={['PADI Instructor', 'FRTI 응급처치 전문가', '물공포증 특화', '부산 로컬 다이버']}
+                        tags={['PADI Instructor', 'FRTI 응급처치 전문가', '물공포증 극복 특화', '부산 로컬 다이버']}
                         delay="0s"
                         isAdmin={isAdmin}
                     />
@@ -267,13 +284,13 @@ const App: React.FC = () => {
         </section>
 
         <section className="py-32 bg-ocean-deep text-white text-center relative overflow-hidden">
-            <h2 className="font-serif text-4xl md:text-6xl mb-12 relative z-10">부산의 푸른 바다가 <br/> 당신을 기다립니다</h2>
-            <div className="flex flex-wrap justify-center gap-6 relative z-10">
+            <h2 className="font-serif text-4xl md:text-6xl mb-12 relative z-10">지구의 푸른 바다가 <br/> 당신을 기다립니다</h2>
+            <div className="flex flex-wrap justify-center gap-4 md:gap-6 relative z-10 px-6">
                 <a 
                   href={kakaoOpenChatUrl} 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-10 py-5 bg-ocean-aqua text-ocean-deep font-black rounded-full shadow-xl transition-transform hover:scale-105 flex items-center gap-2"
+                  className="px-8 md:px-10 py-5 bg-ocean-aqua text-ocean-deep font-black rounded-full shadow-xl transition-transform hover:scale-105 flex items-center justify-center gap-2 w-full md:w-auto"
                 >
                   <MessageCircle size={20} /> 실시간 카톡 상담
                 </a>
@@ -281,9 +298,17 @@ const App: React.FC = () => {
                   href={instagramUrl} 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-10 py-5 bg-white/10 backdrop-blur-md border-2 border-white/20 font-black rounded-full transition-colors hover:bg-white/20 flex items-center gap-2"
+                  className="px-8 md:px-10 py-5 bg-white/10 backdrop-blur-md border-2 border-white/20 font-black rounded-full transition-colors hover:bg-white/20 flex items-center justify-center gap-2 w-full md:w-auto text-white"
                 >
-                  <Instagram size={20} /> 인스타그램 @seongho_son_barkhouse
+                  <Instagram size={20} /> 인스타그램
+                </a>
+                <a 
+                  href={officialSiteUrl} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 md:px-10 py-5 bg-white/10 backdrop-blur-md border-2 border-white/20 font-black rounded-full transition-colors hover:bg-white/20 flex items-center justify-center gap-2 w-full md:w-auto text-white"
+                >
+                  <ExternalLink size={20} /> 언더더씨다이빙
                 </a>
             </div>
         </section>
@@ -291,16 +316,19 @@ const App: React.FC = () => {
 
       <footer className="bg-slate-900 text-slate-400 py-20 px-6">
         <div className="container mx-auto text-center">
-          <div className="flex justify-center gap-6 mb-8">
+          <div className="flex justify-center items-center gap-6 mb-8">
              <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-ocean-aqua transition-colors">
                 <Instagram size={24} />
+             </a>
+             <a href={officialSiteUrl} target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 rounded-lg border border-white/20 text-xs hover:border-white hover:text-white transition-all">
+                언더더씨다이빙
              </a>
              <a href={kakaoOpenChatUrl} target="_blank" rel="noopener noreferrer" className="hover:text-ocean-aqua transition-colors">
                 <MessageCircle size={24} />
              </a>
           </div>
-          <p className="mb-2">언더더씨 부산 | 대표 강사 손성호</p>
-          <p className="text-sm opacity-50">© 2024 언더더씨 부산. All rights reserved.</p>
+          <p className="mb-2">언더더씨 부산 | 강사 손성호</p>
+          <p className="text-sm opacity-50">© 2025 언더더씨 부산. All rights reserved.</p>
         </div>
       </footer>
     </div>
