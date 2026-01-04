@@ -5,64 +5,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- SEO 및 구글 등록 최적화 -->
     <title>언더더씨 부산 | 프리다이빙 교육 전문 PADI 인증</title>
-    <meta name="description" content="부산 해운대 송정 프리다이빙 교육 전문, 손성호 강사의 1:3 소수정예 밀착 교육. 물공포증 극복 및 초보자 전문 과정." />
-    <meta name="keywords" content="언더더씨 부산, 부산 프리다이빙, 해운대 프리다이빙, 송정 프리다이빙, 프리다이빙 자격증, PADI 프리다이빙, 손성호 강사" />
-    <link rel="canonical" href="https://underthesea-busan.kr" />
+    <meta name="description" content="부산 해운대 송정 프리다이빙 교육 전문 센터. 손성호 강사의 1:3 소수정예 밀착 교육." />
     
-    <!-- 구글 서치 콘솔 확인용 (사용자가 발급받은 코드를 content에 넣어야 함) -->
-    <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE_HERE" />
-
-    <!-- Open Graph (SNS 공유 최적화) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="언더더씨 부산 | 프리다이빙 교육 전문" />
-    <meta property="og:description" content="한 번의 호흡으로 만나는 새로운 세상, 부산 프리다이빙은 언더더씨와 함께하세요." />
-    <meta property="og:url" content="https://underthesea-busan.kr" />
-    <meta property="og:image" content="https://underthesea-busan.kr/og-image.jpg" />
-
-    <!-- 구조화된 데이터 (구글 로컬 비즈니스 인식) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "언더더씨 부산",
-      "image": "https://underthesea-busan.kr/logo.png",
-      "@id": "https://underthesea-busan.kr",
-      "url": "https://underthesea-busan.kr",
-      "telephone": "+82-10-3879-4710",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "해운대구",
-        "addressLocality": "부산광역시",
-        "addressCountry": "KR"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 35.1595,
-        "longitude": 129.1604
-      },
-      "openingHoursSpecification": [
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-          "opens": "18:00",
-          "closes": "22:00"
-        },
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Saturday", "Sunday"],
-          "opens": "07:00",
-          "closes": "20:00"
-        }
-      ]
-    }
-    </script>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Pretendard:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <script>
       tailwind.config = {
         theme: {
@@ -83,16 +33,28 @@
         }
       }
     </script>
+    
     <style>
-      html {
-        scroll-behavior: smooth;
-        scroll-padding-top: 100px;
+      html { scroll-behavior: smooth; }
+      body { 
+        background-color: #F4F7F9; 
+        margin: 0; 
+        padding: 0; 
+        overflow-x: hidden;
       }
-      body {
-        background-color: #F4F7F9;
-        color: #1a1a1a;
+      #root { min-height: 100vh; }
+      
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+      
+      .canvas-container {
+        background: radial-gradient(circle at center, #00416A 0%, #001a2b 100%);
       }
     </style>
+
     <script type="importmap">
     {
       "imports": {
@@ -100,7 +62,7 @@
         "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
         "react/": "https://aistudiocdn.com/react@^19.2.0/",
         "@react-three/fiber": "https://aistudiocdn.com/@react-three/fiber@^9.4.0",
-        "@react-three/drei": "https://aistudiocdn.com/@react-three/drei@^10.7.7",
+        "@react-three/drei": "https://aistudiocdn.com/@react-three/drei@10.0.0",
         "three": "https://aistudiocdn.com/three@^0.181.1",
         "framer-motion": "https://aistudiocdn.com/framer-motion@^12.23.24",
         "lucide-react": "https://aistudiocdn.com/lucide-react@^0.553.0"
@@ -110,5 +72,6 @@
   </head>
   <body>
     <div id="root"></div>
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>
