@@ -39,6 +39,10 @@ const App: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
 
+  // 사용자 인스타그램 계정 및 카카오톡 오픈채팅 계정
+  const instagramUrl = "https://www.instagram.com/seongho_son_barkhouse/";
+  const kakaoOpenChatUrl = "https://open.kakao.com/o/sCx5XR9h";
+
   useEffect(() => {
     setIsMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -68,7 +72,6 @@ const App: React.FC = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // 시뮬레이션: 어떤 비밀번호든 관리자 모드 진입
     setIsAdmin(true);
     setShowLogin(false);
   };
@@ -100,7 +103,15 @@ const App: React.FC = () => {
             <a href="#curriculum" onClick={scrollToSection('curriculum')} className={`hover:text-ocean-aqua transition-colors uppercase ${scrolled ? 'text-slate-600' : 'text-white'}`}>교육과정</a>
             <a href="#instructors" onClick={scrollToSection('instructors')} className={`hover:text-ocean-aqua transition-colors uppercase ${scrolled ? 'text-slate-600' : 'text-white'}`}>강사진</a>
             <a 
-              href="https://open.kakao.com/o/syourlink" 
+              href={instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`hover:text-ocean-aqua transition-colors flex items-center gap-1 ${scrolled ? 'text-slate-600' : 'text-white'}`}
+            >
+              <Instagram size={18} />
+            </a>
+            <a 
+              href={kakaoOpenChatUrl} 
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-2.5 bg-ocean-aqua text-ocean-deep rounded-full hover:scale-105 transition-all shadow-lg font-bold flex items-center gap-2"
@@ -258,15 +269,38 @@ const App: React.FC = () => {
         <section className="py-32 bg-ocean-deep text-white text-center relative overflow-hidden">
             <h2 className="font-serif text-4xl md:text-6xl mb-12 relative z-10">부산의 푸른 바다가 <br/> 당신을 기다립니다</h2>
             <div className="flex flex-wrap justify-center gap-6 relative z-10">
-                <a href="https://open.kakao.com/o/syourlink" className="px-10 py-5 bg-ocean-aqua text-ocean-deep font-black rounded-full shadow-xl transition-transform hover:scale-105">실시간 카톡 상담</a>
-                <a href="https://instagram.com/underthesea_busan" className="px-10 py-5 bg-white/10 backdrop-blur-md border-2 border-white/20 font-black rounded-full transition-colors hover:bg-white/20">인스타그램</a>
+                <a 
+                  href={kakaoOpenChatUrl} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-10 py-5 bg-ocean-aqua text-ocean-deep font-black rounded-full shadow-xl transition-transform hover:scale-105 flex items-center gap-2"
+                >
+                  <MessageCircle size={20} /> 실시간 카톡 상담
+                </a>
+                <a 
+                  href={instagramUrl} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-10 py-5 bg-white/10 backdrop-blur-md border-2 border-white/20 font-black rounded-full transition-colors hover:bg-white/20 flex items-center gap-2"
+                >
+                  <Instagram size={20} /> 인스타그램 @seongho_son_barkhouse
+                </a>
             </div>
         </section>
       </main>
 
       <footer className="bg-slate-900 text-slate-400 py-20 px-6">
         <div className="container mx-auto text-center">
-          <p>© 2024 언더더씨 부산. All rights reserved.</p>
+          <div className="flex justify-center gap-6 mb-8">
+             <a href={instagramUrl} target="_blank" rel="noopener noreferrer" className="hover:text-ocean-aqua transition-colors">
+                <Instagram size={24} />
+             </a>
+             <a href={kakaoOpenChatUrl} target="_blank" rel="noopener noreferrer" className="hover:text-ocean-aqua transition-colors">
+                <MessageCircle size={24} />
+             </a>
+          </div>
+          <p className="mb-2">언더더씨 부산 | 대표 강사 손성호</p>
+          <p className="text-sm opacity-50">© 2024 언더더씨 부산. All rights reserved.</p>
         </div>
       </footer>
     </div>
