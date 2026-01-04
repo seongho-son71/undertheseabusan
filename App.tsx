@@ -2,11 +2,17 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { OceanHeroScene, DiverScene } from './components/SeaScenes';
 import { BreathCycleDiagram, CurriculumChart } from './components/FreediveVisuals';
-import { ArrowDown, Menu, X, Anchor, Users, Calendar, Instagram, MessageCircle, MapPin, Phone, Mail } from 'lucide-react';
+import { AdminDashboard } from './components/AdminDashboard';
+import { ArrowDown, Menu, X, Anchor, Users, Calendar, Instagram, MessageCircle, MapPin, Phone, Mail, Settings, Lock, Eye } from 'lucide-react';
 
-const InstructorCard = ({ name, role, tags, delay }: { name: string, role: string, tags: string[], delay: string }) => {
+const InstructorCard = ({ name, role, tags, delay, isAdmin }: { name: string, role: string, tags: string[], delay: string, isAdmin: boolean }) => {
   return (
-    <div className="flex flex-col group items-center p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 w-full max-w-sm hover:-translate-y-2 animate-fade-in-up" style={{ animationDelay: delay }}>
+    <div className="flex flex-col group items-center p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-2xl transition-all duration-500 w-full max-w-sm hover:-translate-y-2 animate-fade-in-up relative" style={{ animationDelay: delay }}>
+      {isAdmin && (
+        <button className="absolute top-4 right-4 p-2 bg-ocean-aqua/20 text-ocean-deep rounded-full hover:bg-ocean-aqua transition-colors">
+          <Settings size={16} />
+        </button>
+      )}
       <div className="w-32 h-32 bg-ocean-sand rounded-full mb-6 flex items-center justify-center text-ocean-deep overflow-hidden border-4 border-ocean-aqua/20 shadow-inner group-hover:scale-105 transition-transform">
          <Users size={56} />
       </div>
@@ -17,6 +23,11 @@ const InstructorCard = ({ name, role, tags, delay }: { name: string, role: strin
           <span key={tag} className="text-xs px-3 py-1 bg-ocean-sand text-ocean-deep font-medium rounded-full border border-ocean-aqua/10">{tag}</span>
         ))}
       </div>
+      {isAdmin && (
+        <button className="mt-6 w-full py-2 border-2 border-dashed border-slate-200 text-slate-400 text-xs font-bold rounded-xl hover:border-ocean-aqua hover:text-ocean-aqua transition-all">
+          + 정보 수정
+        </button>
+      )}
     </div>
   );
 };
@@ -25,6 +36,8 @@ const App: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -45,11 +58,31 @@ const App: React.FC = () => {
     }
   };
 
+  const toggleAdmin = () => {
+    if (isAdmin) {
+      setIsAdmin(false);
+    } else {
+      setShowLogin(true);
+    }
+  };
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // 시뮬레이션: 어떤 비밀번호든 관리자 모드 진입
+    setIsAdmin(true);
+    setShowLogin(false);
+  };
+
   if (!isMounted) return <div className="min-h-screen bg-ocean-deep" />;
 
   return (
     <div className="min-h-screen bg-ocean-sand text-slate-800 font-sans selection:bg-ocean-aqua selection:text-ocean-deep">
       
+      {/* Admin Status Bar */}
+      {isAdmin && (
+        <div className="fixed top-0 left-0 right-0 h-1 bg-ocean-aqua z-[110] animate-pulse" />
+      )}
+
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${scrolled ? 'bg-white/90 shadow-md py-3' : 'bg-transparent py-6'}`}>
         <div className="container mx-auto px-6 flex justify-between items-center">
@@ -81,6 +114,32 @@ const App: React.FC = () => {
           </button>
         </div>
       </nav>
+
+      {/* Admin Login Modal */}
+      {showLogin && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center bg-ocean-deep/80 backdrop-blur-md p-6">
+          <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl animate-fade-in-up">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="font-serif text-2xl text-slate-900">관리자 인증</h3>
+              <button onClick={() => setShowLogin(false)} className="text-slate-400 hover:text-slate-600"><X /></button>
+            </div>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Access Key</label>
+                <input 
+                  type="password" 
+                  autoFocus
+                  placeholder="관리자 암호를 입력하세요"
+                  className="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-ocean-aqua transition-all"
+                />
+              </div>
+              <button type="submit" className="w-full py-4 bg-ocean-deep text-white font-bold rounded-xl hover:bg-ocean-medium transition-all shadow-lg">
+                접속하기
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Hero Section */}
       <header className="relative h-screen flex items-center justify-center overflow-hidden bg-ocean-deep canvas-container">
@@ -115,6 +174,9 @@ const App: React.FC = () => {
       </header>
 
       <main className="relative z-30">
+        {/* Admin Dashboard Widget */}
+        {isAdmin && <AdminDashboard onExit={() => setIsAdmin(false)} />}
+
         <section id="intro" className="py-32 bg-white">
           <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
             <div className="lg:col-span-5 relative group">
@@ -165,16 +227,30 @@ const App: React.FC = () => {
 
         <section id="instructors" className="py-32 bg-white">
            <div className="container mx-auto px-6">
-                <div className="text-center mb-20">
+                <div className="flex justify-center items-center gap-6 mb-20">
                     <h2 className="font-serif text-5xl md:text-6xl text-slate-900">강사진</h2>
+                    <button 
+                      onClick={toggleAdmin}
+                      className={`p-3 rounded-full transition-all ${isAdmin ? 'bg-ocean-aqua text-ocean-deep rotate-90 shadow-lg' : 'bg-slate-100 text-slate-400 hover:bg-slate-200'}`}
+                      title={isAdmin ? "관리자 모드 종료" : "관리자 모드 진입"}
+                    >
+                        {isAdmin ? <Settings size={28} /> : <Lock size={20} />}
+                    </button>
                 </div>
                 <div className="flex flex-wrap gap-10 justify-center">
                     <InstructorCard 
                         name="손성호" 
                         role="Master Instructor" 
                         tags={['PADI Instructor', 'FRTI 응급처치 전문가', '물공포증 특화', '부산 로컬 다이버']}
-                        delay="0s" 
+                        delay="0s"
+                        isAdmin={isAdmin}
                     />
+                    {isAdmin && (
+                      <div className="flex flex-col items-center justify-center p-8 bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl w-full max-w-sm min-h-[400px] text-slate-400 hover:border-ocean-aqua hover:text-ocean-aqua cursor-pointer transition-all">
+                        <Users size={48} className="mb-4 opacity-20" />
+                        <span className="font-bold">+ 새 강사 추가</span>
+                      </div>
+                    )}
                 </div>
            </div>
         </section>
